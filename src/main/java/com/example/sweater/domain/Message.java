@@ -15,6 +15,9 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User author;
 
+    // имя файла - путь хранится в пропертиз
+
+    private String fileName;
     public Message() {
     }
 
@@ -22,6 +25,14 @@ public class Message {
         this.author = user;
         this.text = text;
         this.tag = tag;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getAuthorName() {
