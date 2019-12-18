@@ -6,5 +6,4 @@ files_from_server
 /files_from_server
 *.txt
 .txt
-*.DS_Store
 .DS_Store
