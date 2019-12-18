@@ -3,3 +3,4 @@
 target
 .idea
 files_from_server
+.DS_Store
