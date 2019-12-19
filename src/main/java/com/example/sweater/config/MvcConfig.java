@@ -25,5 +25,8 @@ public class MvcConfig implements WebMvcConfigurer {
         // перенаправление запросов
         // file - протокол те место в файловой системе
 
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
+
     }
 }
