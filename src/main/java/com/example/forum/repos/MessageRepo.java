@@ -1,6 +1,6 @@
-package com.example.sweater.repos;
+package com.example.forum.repos;
 
-import com.example.sweater.domain.Message;
+import com.example.forum.domain.Message;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
