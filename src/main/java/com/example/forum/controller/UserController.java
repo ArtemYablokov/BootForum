@@ -2,9 +2,10 @@ package com.example.forum.controller;
 
 import com.example.forum.domain.Role;
 import com.example.forum.domain.User;
-import com.example.forum.repos.UserRepo;
+import com.example.forum.service.UserSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,11 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasAuthority('ADMIN')") // доступ к этому маппингу додступен только АДМИНУ
 public class UserController {
     @Autowired
-    UserRepo userRepo;
+    UserSevice userSevice;
 
     @GetMapping
     public String getUser(Model model){
-        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("users", userSevice.findAll());
         return "userList";
     }
 
@@ -36,36 +37,37 @@ public class UserController {
         return "userEdit";
     }
 
+    //  для редактирования пользователя АДМИНОМ - роли / имя
     @PostMapping()
     public String userSave(
             @RequestParam String userName,
             @RequestParam Map<String, String> form, // в мапе передаются роли ( и не только ! ) - их разное количество
             @RequestParam("userId") User user) // юзера получаем по ID = передается скрыто
     {
-        user.setUsername(userName);
-
-        // ПОЛУЧАЕМ все доступные роли
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name) // переводим их из ЕНАМА в СТРОКУ
-                .collect(Collectors.toSet()); // из АРРАЯ в СЕТ
-
-        // чистим все роли пользователя
-        user.getRoles().clear();
-
-        // устанавливаем пользователю роли
-        for (String key : form.keySet()) { // если в форме есть роль - значит для нее установлен флажок
-            // НО в FORM присутствуют еще
-            //key = userName
-            //key = USER
-            //key = ADMIN
-            //key = userId
-            //key = _csrf  - то что нам не нужно
-            if (roles.contains(key)) { // проверяем что в НАШЕМ СПИСКЕ РОЛЕЙ есть такой ключ
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-
-        userRepo.save(user);
+        userSevice.saveUser(user, form, userName);
         return "redirect:/users";
     }
+
+
+
+    @GetMapping("profile")
+    public String getProfile(Model model,
+                             @AuthenticationPrincipal User user) { // AuthenticationPrincipal -
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+
+        return "profile";
+    }
+
+    @PostMapping("profile")
+    public String updateProfile(
+            @AuthenticationPrincipal User user,
+            @RequestParam String password,
+            @RequestParam String email
+    ) {
+        userSevice.updateProfile(user, password, email);
+
+        return "redirect:/user/profile";
+    }
+
 }
