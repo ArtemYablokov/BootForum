@@ -1,4 +1,4 @@
-<#macro login path isRegisterForm>
+<#macro login path isRegisterForm> <#-- задаем переменную, которую инициализируют, используя шаблон -->
     <form action="${path}" method="post">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">User Name :</label>

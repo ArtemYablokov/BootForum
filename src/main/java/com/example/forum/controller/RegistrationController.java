@@ -43,9 +43,10 @@ public class RegistrationController {
 //        return "redirect:/login";
 //    }
 
+
     @PostMapping("/registration")
-    public String addUser(User user, Map<String, Object> model) {
-        if (!userSevice.addUser(user)) {
+    public String addUser(User user, Map<String, Object> model) { // как сюда попадает ЮЗЕР из формы..
+        if ( !userSevice.addUser(user)) { // проверка что такого нет, отправка АКТИВАЦИОННОГО кода
             model.put("message", "User exists!");
             return "registration";
         }
@@ -53,8 +54,10 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
+    // ПО ЭТОМУ УРЛУ ПЕРЕХОДИТ ПОЛЬЗОВАТЕЛЬ ПРИ АКТИВАЦИИ ИЗ МЭЙЛА
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code) {
+
         boolean isActivated = userSevice.activateUser(code);
 
         if (isActivated) {

@@ -40,7 +40,7 @@ public class MailConfig {
         Properties properties = mailSender.getJavaMailProperties();
 
         properties.setProperty("mail.transport.protocol", protocol);
-        properties.setProperty("mail.debug", debug); /*чтобы отображать в логе проблемы */
+        properties.setProperty("mail.debug", debug); /*чтобы отображать в логе проблемы НЕОБЯЗАТЕЛЬНАЯ ЧАСТЬ  */
 
         return mailSender;
 

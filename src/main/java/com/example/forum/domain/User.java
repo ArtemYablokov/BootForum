@@ -22,8 +22,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+
     private String email;
-    private String activationCode;
+    private String activationCode; // для подтверждения что пользователь владеет МЭЙЛом
 
     public String getEmail() {
         return email;

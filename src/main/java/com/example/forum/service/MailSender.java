@@ -6,11 +6,16 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+// mailSender - ЧТО отправлять
 @Service
 public class MailSender {
+
+    // JavaMailSender - объект в MAILCONFIG - там же и настраивается полностью
+    // КУДА отправлять
     @Autowired
     private JavaMailSender mailSender;
 
+    // ЯВНОЕ УКАЗАНИЕ ОТПРАВИТЕЛЯ
     @Value("${spring.mail.username}")
     private String username;
 
