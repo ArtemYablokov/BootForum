@@ -1,8 +1,8 @@
-package com.example.sweater.controller;
+package com.example.forum.controller;
 
-import com.example.sweater.domain.Message;
-import com.example.sweater.domain.User;
-import com.example.sweater.repos.MessageRepo;
+import com.example.forum.domain.Message;
+import com.example.forum.domain.User;
+import com.example.forum.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

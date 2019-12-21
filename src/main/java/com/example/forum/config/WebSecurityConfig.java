@@ -1,9 +1,8 @@
-package com.example.sweater.config;
+package com.example.forum.config;
 
-import com.example.sweater.service.UserSevice;
+import com.example.forum.service.UserSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/registration", "/static/**").permitAll()
+                    .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll() /*одна звезда - один сегмент*/
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()

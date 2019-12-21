@@ -19,9 +19,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="/main">Messages</a>
             </li>
-            <#if isAdmin>
+            <#if isAdmin> <#-- это булево -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/users">User List</a>
+                    <a class="nav-link" href="/users"> User List </a>
+                </li>
+            </#if>
+            <#if user??> <#-- ?? приводят к булевому выражению объект - задан или нет -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/profile"> Edit profile </a>
                 </li>
             </#if>
         </ul>
