@@ -21,7 +21,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll() /*одна звезда - один сегмент*/
+                    .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll()
+                /*одна звезда - один сегмент - где и лежит активэйшн CODE - значит до подтверждения активации ЮЗЕР не авторизован !!! */
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()

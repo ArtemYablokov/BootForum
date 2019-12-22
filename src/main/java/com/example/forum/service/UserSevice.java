@@ -26,7 +26,7 @@ public class UserSevice implements UserDetailsService {
         return userRepo.findByUsername(username);
     }
 
-    // добавление юзера
+    // добавление юзера - со страницы РЕГИСТРАЦИИ
     public boolean addUser(User user) {
         //проверка что такого еще нет
         User userFromDb = userRepo.findByUsername(user.getUsername());
@@ -36,23 +36,29 @@ public class UserSevice implements UserDetailsService {
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
+
         user.setActivationCode(UUID.randomUUID().toString()); // КОД АКТИВАЦИИ - ДЛЯ Е МЭИЛА
 
         userRepo.save(user);
 
-        sendMessage(user);     // ОТППРАВКА АКТИВАЦИОННОГО КОДА
+        if ( !StringUtils.isEmpty(user.getEmail()) )
+            sendMessage(user);     // ОТППРАВКА АКТИВАЦИОННОГО КОДА - через MailSender
 
         return true;
     }
 
+    // АКТИВАЦИЯ ЮЗЕРА ПРИ ПЕРЕХОДЕ ПО ССЫЛКЕ ИЗ ПОЧТЫ
     public boolean activateUser(String code) {
+
         User user = userRepo.findByActivationCode(code);
 
+        // проверка что юзер - ЕСТЬ
         if (user == null) {
             return false;
         }
 
-        user.setActivationCode(null);
+        user.setActivationCode(null); // это означает что пользователь подтвердил свой почтовый ящик ???
+        // зачем нам сбрасывать КодАктивации юзеру ???
 
         userRepo.save(user);
 
@@ -65,7 +71,6 @@ public class UserSevice implements UserDetailsService {
 
 
     //  для редактирования пользователя АДМИНОМ - роли / имя
-
     public void saveUser(User user, Map<String, String> form, String userName) {
         user.setUsername(userName);
         // ПОЛУЧАЕМ все доступные роли
@@ -88,8 +93,8 @@ public class UserSevice implements UserDetailsService {
         }
         userRepo.save(user);
     }
-    // для редактирования пользователя самим пользователем
 
+    // для редактирования пользователя самим пользователем
     public void updateProfile(User user, String password, String email) {
         // прверка мэйла
         String userEmail = user.getEmail();
@@ -115,7 +120,7 @@ public class UserSevice implements UserDetailsService {
         }
     }
 
-    // ОТППРАВКА АКТИВАЦИОННОГО КОДА
+    // ОТППРАВКА АКТИВАЦИОННОГО КОДА - ПРИХОДИМ ИЗ add - со страницы РЕГИСТРАЦИИ
     private void sendMessage(User user) {
         if ( !StringUtils.isEmpty(user.getEmail()) ) { // ДЛЯ ПРОВЕРКИ ЧТО ПОЛЕ НЕ ПУСТОЕ !!!
             String message = String.format(
@@ -124,7 +129,7 @@ public class UserSevice implements UserDetailsService {
                     user.getUsername(),
                     user.getActivationCode()
             );
-
+            // mailSender - ЧТО отправлять
             mailSender.send(user.getEmail(), "Activation code", message);
         }
     }
